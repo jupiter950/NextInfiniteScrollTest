@@ -1,8 +1,9 @@
 "use client"
-import React, { useEffect, useReducer, useRef, useState } from 'react';
+import React, { useReducer, useRef, useState } from 'react';
 import { useFetch, useInfiniteScroll, useLazyLoading } from '../utils/customHooks';
 import 'bootstrap/dist/css/bootstrap.css'
 import CustomModal from '@/components/CustomModal';
+import Image from 'next/image';
 
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -53,11 +54,13 @@ export default function Home() {
               return (
                 <div key={index} className="card card-grid">
                   <div className="card-body ">
-                    <img
+                    <Image
                       alt={author}
                       data-src={download_url}
                       className="card-img-top"
-                      src={'./spinner.gif'}
+                      src={'/spinner.gif'}
+                      width={100}
+                      height={100}
                       onClick={() => onImageClick(image)}
                     />
                   </div>
@@ -71,7 +74,7 @@ export default function Home() {
         </div>
         {imgData.fetching && (
           <div className="text-center bg-secondary m-auto p-3">
-            <p className="m-0 text-white">Getting images</p>
+            <p className="m-0 text-white">Grid images</p>
           </div>
         )}
         <div id='page-bottom-boundary' style={{ border: '1px solid red' }} ref={bottomBoundaryRef}></div>

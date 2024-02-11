@@ -54,6 +54,7 @@ export const useLazyLoading = (imgSelector, items) => {
             console.error('Image source is invalid');
           } else {
             currentImg.src = newImgSrc;
+            currentImg.srcset = newImgSrc;
           }
           intObs.unobserve(node);
         }
