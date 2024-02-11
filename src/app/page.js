@@ -1,11 +1,20 @@
 "use client"
-import React, { useReducer, useRef } from 'react';
+import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { useFetch, useInfiniteScroll, useLazyLoading } from '../utils/customHooks';
 import 'bootstrap/dist/css/bootstrap.css'
-import Image from "next/image";
-import styles from "./page.module.css";
+import CustomModal from '@/components/CustomModal';
 
 export default function Home() {
+  const [open, setOpen] = useState(false);
+  const [modalData, setModalData] = useState({});
+
+  const onCloseModal = () => setOpen(false);
+
+  const onImageClick = (image) => {
+    setOpen(true);
+    setModalData(image);
+  }
+
   const imgReducer = (state, action) => {
     switch (action.type) {
       case 'STACK_IMAGES':
@@ -37,26 +46,19 @@ export default function Home() {
   return (
     <main>
       <div className="">
-        <nav className="navbar bg-light">
-          <div className="container">
-            <a className="navbar-brand" href="/#">
-              <h2>Infinite scroll + image lazy loading</h2>
-            </a>
-          </div>
-        </nav>
-
         <div id='images' className="container">
           <div className="image-container">
             {imgData.images.map((image, index) => {
               const { author, download_url } = image
               return (
-                <div key={index} className="card">
+                <div key={index} className="card card-grid">
                   <div className="card-body ">
                     <img
                       alt={author}
                       data-src={download_url}
                       className="card-img-top"
                       src={'./spinner.gif'}
+                      onClick={() => onImageClick(image)}
                     />
                   </div>
                   <div className="card-footer">
@@ -74,6 +76,7 @@ export default function Home() {
         )}
         <div id='page-bottom-boundary' style={{ border: '1px solid red' }} ref={bottomBoundaryRef}></div>
       </div>
+      <CustomModal open={open} closeModal={onCloseModal} data={modalData} />
     </main>
   );
 }
